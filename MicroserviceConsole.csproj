@@ -1,9 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
-      <UserSecretsId>23678c38-7049-4c98-b9ae-fc41fdd23e31</UserSecretsId>
-  </PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+        <UserSecretsId>23678c38-7049-4c98-b9ae-fc41fdd23e31</UserSecretsId>
+    </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="App.Metrics.AspNetCore.Health.Endpoints" Version="3.2.0" />

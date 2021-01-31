@@ -1,5 +1,4 @@
 using System;
-using System.Net.Http.Json;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,7 +23,7 @@ namespace MicroserviceConsole
             return Task.CompletedTask;
         }
 
-        static void RegisterOnMessageHandlerAndReceiveMessages()
+        private static void RegisterOnMessageHandlerAndReceiveMessages()
         {
             // Configure the MessageHandler Options in terms of exception handling, number of concurrent messages to deliver etc.
             var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
@@ -42,19 +41,19 @@ namespace MicroserviceConsole
             _queueClient.RegisterMessageHandler(ProcessMessagesAsync, messageHandlerOptions);
         }
 
-        static async Task ProcessMessagesAsync(Message message, CancellationToken token)
+        private static async Task ProcessMessagesAsync(Message message, CancellationToken token)
         {
             // Process the message
-            Console.WriteLine($"Received message: SequenceNumber:{message.SystemProperties.SequenceNumber} Body:{Encoding.UTF8.GetString(message.Body)}");
+            Console.WriteLine(
+                $"Received message: SequenceNumber:{message.SystemProperties.SequenceNumber} Body:{Encoding.UTF8.GetString(message.Body)}");
 
-            var msgObject = JsonConvert.DeserializeObject(Encoding.UTF8.GetString( message.Body));
-            
+            var msgObject = JsonConvert.DeserializeObject(Encoding.UTF8.GetString(message.Body));
+
             // This can be done only if the queueClient is created in ReceiveMode.PeekLock mode (which is default).
             await _queueClient.CompleteAsync(message.SystemProperties.LockToken);
-
         }
 
-        static Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
+        private static Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
         {
             Console.WriteLine($"Message handler encountered an exception {exceptionReceivedEventArgs.Exception}.");
             var context = exceptionReceivedEventArgs.ExceptionReceivedContext;
